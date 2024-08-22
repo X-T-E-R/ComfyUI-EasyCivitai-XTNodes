@@ -1,0 +1,8 @@
+.secrets.toml
+json_cache/*
+**/__pycache__/
+*.pyc
+*.log
+*.cache
+.mypy_cache/
+.pytest_cache/

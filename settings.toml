@@ -1,0 +1,16 @@
+[civitai]
+api_endpoint = "https://civitai.com/api/v1" # Do not change if you don't know what you are doing
+max_preview_images = 6 # Max number of preview images to show in the node
+# define token in .secrets.toml, do not put it here
+dynaconf_merge=true
+
+[download]
+method = "aria2" # aria2 or requests, recommended: aria2
+
+[aria2]
+extra_args = [] # extra_args for aria2c command, example: "--http-proxy=http://127.0.0.1:10809"
+max_retry = 5 # max retry times for aria2c command
+retry_interval = 15 # retry interval for aria2c command
+disable_ipv6 = true # disable ipv6 for aria2c command, recommended: true
+dynaconf_merge=true
+
