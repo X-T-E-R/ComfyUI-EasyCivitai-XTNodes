@@ -6,6 +6,13 @@
 **Introducing the Civitai Node Loading System**—your all-in-one solution for seamless model and LoRA management. Whether you’re pulling directly from Civitai or loading from local files, our system makes it a breeze. With automatic preview generation and BLAKE3 hash verification, you can be sure that you’re always working with the correct and highest quality resources. Say goodbye to the guesswork and hello to a streamlined, efficient workflow that’s as powerful as it is user-friendly.
 
 ------
+### Example Workflow:
+Thanks "Yox Rider" for the example workflow.
+
+https://openart.ai/workflows/seal_noxious_47/load-a-civitai-model-directly-from-url-with-previews-lora-checkpoint-lora-stack/YRaCFjCDxDepmBbI8r4R
+
+
+------
 ### Node Examples:
 
 #### **1. Load Checkpoint with Previews (XTNodes)**
@@ -169,3 +176,19 @@ Make sure all necessary configurations are set up correctly to enable full funct
 - **Seamless Civitai Integration**: Whether loading models directly from URLs or local files, our nodes are fully integrated with Civitai, ensuring that all resources are properly referenced and verifiable.
 
 This system is ideal for users who require a reliable and efficient workflow for managing AI resources, with the added benefit of previewing and verifying models to ensure the highest quality results.
+
+
+
+### Credits
+
+I want to extend my heartfelt thanks to the incredible libraries that are the backbone of this project:
+
+- **aria2**
+- **blake3**
+- **sanitize_filename**
+- **pydantic**
+- **dynaconf**
+- **codetiming**
+
+A special thanks also goes to the [ComfyUI-Lora-Auto-Trigger-Words](https://github.com/idrirap/ComfyUI-Lora-Auto-Trigger-Words) project, which inspired key aspects of our implementation. Your work provided a valuable foundation and guidance, and for that, we are truly grateful.
+

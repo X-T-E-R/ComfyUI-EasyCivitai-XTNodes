@@ -8,6 +8,9 @@ import folder_paths
 def append_lora_stack(lora_stack, lora_name, lora_weight, clip_weight):
     if lora_stack is None:
         lora_stack = []
+    else:
+        from copy import deepcopy
+        lora_stack = deepcopy(lora_stack)
     lora_stack.append(
         (
             lora_name,

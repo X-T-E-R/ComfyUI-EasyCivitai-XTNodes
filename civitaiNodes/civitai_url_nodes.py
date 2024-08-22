@@ -8,6 +8,9 @@ import folder_paths
 def append_lora_stack(lora_stack, lora_name, lora_weight, clip_weight):
     if lora_stack is None:
         lora_stack = []
+    else:
+        from copy import deepcopy
+        lora_stack = deepcopy(lora_stack)
     lora_stack.append((lora_name, lora_weight, clip_weight,))
     return lora_stack
 
@@ -52,6 +55,7 @@ class CivitaiCheckpointLoaderSimple:
     RETURN_NAMES = ("MODEL", "CLIP", "VAE", "summary(Text)")
     FUNCTION = "load_checkpoint"
     CATEGORY = "loaders/Civitai"
+    history = None
     modelinfo: ModelInfo = None
 
     def load_checkpoint(self, url, preview_images):
