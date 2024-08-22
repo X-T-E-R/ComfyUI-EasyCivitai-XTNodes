@@ -11,6 +11,7 @@ Thanks "Yox Rider" for the example workflow.
 
 https://openart.ai/workflows/seal_noxious_47/load-a-civitai-model-directly-from-url-with-previews-lora-checkpoint-lora-stack/YRaCFjCDxDepmBbI8r4R
 
+https://openart.ai/workflows/seal_noxious_47/load-model-with-previews-lora-checkpoint-lora-stack/k7g45npgYRVSmtDbce2b
 
 ------
 ### Node Examples:
