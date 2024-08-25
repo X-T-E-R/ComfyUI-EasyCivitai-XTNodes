@@ -134,12 +134,13 @@ After installation, you can verify that aria2c is installed correctly by running
 aria2c --version
 ```
 
-#### Method A: Install via Civitai Manager
+#### Method A: Install via ComfyUI Manager
 
-1. Open Civitai Manager.
-2. Search for "ComfyUI Easy Civitai (XTNodes)".
-3. Install directly through the manager.
-4. Config.
+1. Install the ComfyUI Manager: https://github.com/ltdrdata/ComfyUI-Manager.
+2. Open ComfyUI Manager.
+3. Search for "ComfyUI Easy Civitai (XTNodes)".
+4. Install directly through the manager.
+5. Config.
 
 #### Method B: Manual Installation
 
