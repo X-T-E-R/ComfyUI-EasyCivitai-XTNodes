@@ -4,7 +4,7 @@ import pathlib
 sys.path.append(str(pathlib.Path(__file__).parent))
 import glob
 
-all_py_files = pathlib.Path(__file__).parent.glob('**/*.py')
+all_py_files = pathlib.Path(__file__).parent.glob('civitaiNodes/**/*.py')
 
 import importlib.util
 
