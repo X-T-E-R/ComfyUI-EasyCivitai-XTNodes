@@ -1,0 +1,15 @@
+[project]
+name = "comfyUI-easycivitai-xtnodes"
+description = "A custom ComfyUI node that allows direct download and import of Civitai models via URL or from local files. It provides features like image previews, bypass options, and supports Checkpoint, LoRA, and LoRA Stack models."
+version = "0.1.0"
+license = { file = "LICENSE.txt" }
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/X-T-E-R/ComfyUI-EasyCivitai-XTNodes"
+
+#  Used by Comfy Registry https://comfyregistry.org
+[tool.comfy]
+PublisherId = "xter"
+DisplayName = "ComfyUI-EasyCivitai-XTNodes"
+Icon = ""
