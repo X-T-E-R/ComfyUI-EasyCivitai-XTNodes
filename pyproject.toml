@@ -1,8 +1,8 @@
 [project]
 name = "comfyui-easycivitai-xtnodes"
-description = "Fed up with the hassle of managing AI models and LoRAs? Tired of hunting down the perfect resources, only to struggle with getting them loaded and configured just right?\nIntroducing the Civitai Node Loading System—your all-in-one solution for seamless model and LoRA management. Whether you’re pulling directly from Civitai or loading from local files, our system makes it a breeze. With automatic preview generation and BLAKE3 hash verification, you can be sure that you’re always working with the correct and highest quality resources. Say goodbye to the guesswork and hello to a streamlined, efficient workflow that’s as powerful as it is user-friendly."
-version = "1.0.0"
-license = {file = "LICENSE"}
+description = "Load your model with image previews, or directly download and import Civitai models via URL. This custom ComfyUI node supports Checkpoint, LoRA, and LoRA Stack models, offering features like bypass options."
+version = "0.2.0"
+license = {file = "LICENSE.txt"}
 dependencies = ["blake3", "sanitize_filename", "pydantic", "dynaconf", "codetiming"]
 
 [project.urls]
@@ -10,6 +10,6 @@ Repository = "https://github.com/X-T-E-R/ComfyUI-EasyCivitai-XTNodes"
 #  Used by Comfy Registry https://comfyregistry.org
 
 [tool.comfy]
-PublisherId = ""
+PublisherId = "xter"
 DisplayName = "ComfyUI-EasyCivitai-XTNodes"
 Icon = ""
