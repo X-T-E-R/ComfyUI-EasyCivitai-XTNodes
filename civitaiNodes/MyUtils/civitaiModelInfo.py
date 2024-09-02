@@ -15,8 +15,29 @@ from folder_paths import models_dir
 
 models_folder = config.models_folder
 from .download_utils import download_civitai_model
-from .ui_utils import remove_condition_in_url
 from .LazyLoadDict import LazyLoadDict
+
+
+def remove_condition_in_url(url: str) -> str:
+    # 从URL中删除宽度等于的参数
+    # https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/8eb19f79-6163-4ade-91ec-be4bac453910/width=450/8547284.jpeg
+    # -> https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/8eb19f79-6163-4ade-91ec-be4bac453910/original=true/8547284.jpeg
+    
+    url_parse_result = list(urlparse(url))
+    if not "civitai.com" in url_parse_result[1]:
+        return url
+    url_parts = url_parse_result[2].split("/")
+    if len(url_parts) <= 2:
+        return url
+    else:
+        if "=" in url_parts[-2]:
+            # url_parts[-2] = "original=true"
+            url_parts[-2] = "width=450"
+            url_parse_result[2] = "/".join(url_parts)
+            return urlunparse(url_parse_result)
+        else:
+            return url
+
 
 # 映射模型类型到保存路径
 type_to_savepath_map = {
@@ -223,7 +244,7 @@ class ModelInfo(BaseModel):
             result += f"\nTrained Words: { ', '.join(self.trainedWords) }"
         return result
 
-    @Timer(text="Download Time: {seconds:.1f} seconds")
+    # @Timer(text="Download Time: {seconds:.1f} seconds")
     def download(self, full_path: pathlib.Path = None):
         # 下载模型文件
         if full_path is None:

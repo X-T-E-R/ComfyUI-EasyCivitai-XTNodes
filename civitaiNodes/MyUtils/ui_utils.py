@@ -4,7 +4,8 @@ from PIL import Image
 
 import folder_paths
 
-
+from civitaiNodes.config import config
+from .civitaiModelInfo import ModelInfo, remove_condition_in_url
 import hashlib
 import os
 from pathlib import Path
@@ -114,7 +115,8 @@ def remove_condition_in_url(url: str) -> str:
         return url
     else:
         if "=" in url_parts[-2]:
-            url_parts[-2] = "original=true"
+            # url_parts[-2] = "original=true"
+            url_parts[-2] = "width=450"
             url_parse_result[2] = "/".join(url_parts)
             return urlunparse(url_parse_result)
         else:
@@ -138,11 +140,122 @@ def get_metadata_from_file(filepath: str) -> dict:
         return header_json["__metadata__"] if "__metadata__" in header_json else {}
 
 
-
 def get_metadata_from_url(url: str) -> dict:
     image, _ , _, save_path = load_image_from_url(url)
     return get_metadata_from_file(save_path)
 
+class ExtraCivitaiParams:
+    # append_loraname_if_empty: bool = False # This parameter is deprecated.
+    preview_images: bool = True
+    override_trigger_words: str = ""
+
+    bypass : bool = False
+
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        if (
+            isinstance(self.override_trigger_words, bool)
+            or isinstance(self.override_trigger_words, str) and self.override_trigger_words.lower() in ["true", "false"]
+        ):
+            # 因为版本更新废弃了原来的append_loraname_if_empty参数，所以这里做一个兼容
+            # Because the original append_loraname_if_empty parameter has been deprecated in the new version, so here is a compatibility
+            self.override_trigger_words = ""
+
+    def deal_trigger_words(self, modelinfo: ModelInfo) -> List[str]:
+        if self.bypass:
+            return []
+        if len(self.override_trigger_words.strip()) > 0:
+            return [x.strip() for x in self.override_trigger_words.split(",")]
+        if modelinfo is None:
+            return []
+        assert isinstance(modelinfo, ModelInfo)
+        if len(modelinfo.trainedWords) > 0:
+            return modelinfo.trainedWords
+
+
+class ExtraCivitaiOutput:
+    summary = {
+        "type": "STRING",
+        "name": "summary(Text)",
+        "default": ""
+    }
+    civitai_trigger_words = {
+        "type": "LIST",
+        "name": "civitai_trigger_words",
+        "default": []
+    }
+    
+    extra_outputs = {
+        "civitai_trigger_words": civitai_trigger_words,
+        "summary": summary,
+    }
+
+def get_summary(modelinfo: ModelInfo, trigger_words: List[str] = None) -> str:
+    if modelinfo is None:
+        result = "Could not find model in civitai.com"
+        if trigger_words is not None and len(trigger_words) > 0:
+            result += f"\nTrigger words: {', '.join(trigger_words)}"
+        return result
+    assert isinstance(modelinfo, ModelInfo)
+    result = modelinfo.summary
+    if trigger_words is not None and len(trigger_words) > 0:
+        result += f"\nOverwrite trigger words: {', '.join(trigger_words)}"
+    return result
+
+def add_extra_output(original_result: tuple, extra_civitai_params: ExtraCivitaiParams, modelinfo: ModelInfo):
+    new_result = list(original_result)
+    trigger_words = extra_civitai_params.deal_trigger_words(modelinfo)
+    new_result.append(trigger_words)
+    new_result.append(get_summary(modelinfo, trigger_words))
+    return tuple(new_result)
+
+
+def add_civitai_input_dict(original_input: dict):
+    if "required" not in original_input:
+        original_input["required"] = {}
+    original_input["required"].update({
+                "override_trigger_words": ("STRING", {"default": ""}),
+                "preview_images": ("BOOLEAN", {"default": True}),
+            }
+        )
+    return original_input
+
+def add_civitai_output(RETURN_TYPES : tuple, RETURN_NAMES: tuple):
+    new_return_types = list(RETURN_TYPES)
+    new_return_names = list(RETURN_NAMES)
+    for key, value in ExtraCivitaiOutput.extra_outputs.items():
+        if isinstance(value, dict):
+            new_return_types.append(value["type"])
+            new_return_names.append(value["name"])
+    return tuple(new_return_types), tuple(new_return_names)
+
+def add_civitai_return_types(RETURN_TYPES : tuple):
+    new_return_types = list(RETURN_TYPES)
+    for key, value in ExtraCivitaiOutput.extra_outputs.items():
+        if isinstance(value, dict):
+            new_return_types.append(value["type"])
+    return tuple(new_return_types)
+
+def add_civitai_return_names(RETURN_NAMES: tuple):
+    new_return_names = list(RETURN_NAMES)
+    for key, value in ExtraCivitaiOutput.extra_outputs.items():
+        if isinstance(value, dict):
+            new_return_names.append(value["name"])
+    return tuple(new_return_names)
+
+
+def get_ui_images(image_urls):
+    if len(image_urls) == 0:
+        return {}
+    elif len(image_urls) > config.max_preview_images:
+        image_urls = image_urls[:config.max_preview_images]
+    previews = []
+    for image_url in image_urls:
+        _, image_info_dict, _, _ = load_image_from_url(image_url)
+        previews.append(image_info_dict)
+    return previews
 
 if __name__ == "__main__":
     url = "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/3488411f-4ed7-43f8-8b9e-abe91e3ed78e/original=true/00365-965542718.jpeg"

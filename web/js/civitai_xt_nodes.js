@@ -13,7 +13,9 @@ app.registerExtension({
 			"CivitaiCheckpointLoaderSimple",
 			"CivitaiLoraLoader",
 			"CivitaiLoraLoaderStacked",
-			"CivitaiLoraLoaderStackedAdvanced"
+			"CivitaiLoraLoaderStackedAdvanced",
+			"XTNodesCleanPrompt",
+    		"XTNodesPromptConcatenate"
 		];
 
 		if (validNodeNames.includes(nodeData.name)) {
