@@ -20,8 +20,8 @@ DEFAULT_PROMPT_INPUT_TYPES = {
             {"default": True},
         ),
         "whitespace_style": (
-            ["space", "underscore"],
-            {"default": "space"},
+            ["keep", "space", "underscore"],
+            {"default": "keep"},
         )
     },
 }
@@ -46,10 +46,9 @@ def convert_prompt_to_string(prompt: Any) -> str:
     else:
         prompt = str(prompt)
     assert isinstance(prompt, str)
-    for char in ["_", "\t"]:
-        prompt = prompt.replace(char, " ")
     for char in ["\n", "\r", "\f", "\v"]:
         prompt = prompt.replace(char, ",")
+    prompt = prompt.replace("\t", " ")
     prompt = prompt.replace("，", ",")
     return prompt
 
@@ -97,6 +96,8 @@ def clean_prompt(
         words = deduplicate_list(words)
     if whitespace_style == "underscore":
         words = [word.replace(" ", "_") for word in words]
+    elif whitespace_style == "space":
+        words = [word.replace("_", " ") for word in words]
 
     return ", ".join(words)
 
