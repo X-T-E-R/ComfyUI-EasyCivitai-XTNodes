@@ -82,6 +82,8 @@ def download_file_with_requests(url, full_path):
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse   
 def add_token_to_url(url: str, token: str) -> str:
     # 在URL中添加或更新token参数
+    if token is None or len(token) == 0:
+        return url
     parsed_url = urlparse(url)
     query_params = parse_qs(parsed_url.query)
     query_params['token'] = token

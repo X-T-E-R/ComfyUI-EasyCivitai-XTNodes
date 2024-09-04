@@ -13,9 +13,10 @@ settings = Dynaconf(
 )
 # print(settings)
 
+
 class CivitaiConfig:
     api_endpoint: str = settings.civitai.api_endpoint
-    token: str = settings.civitai.token
+    token: str = settings.civitai.get("token", "")
     json_cache_dir: pathlib.Path = pathlib.Path(__file__).parent.parent / "json_cache"
     aria2_extra_args: list[str] = settings.aria2.extra_args or []
     max_retry: int = settings.aria2.max_retry or 5
